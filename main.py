@@ -24,4 +24,12 @@ for root, directories, files in os.walk(path, topdown=False):
         album = audio_file.tag.album
 
         #   Print each file path
-        print(f"Full Path: {os.path.join(root, artist, album, title)}.mp3")
+        print(f"-------------------------------\n"
+              f"Full Path: {os.path.join(root, name)}.mp3\n"
+              f"Corrected Path: {os.path.join(root, artist, album, title)}.mp3")
+
+        #   TODO
+        #   - Conditional function for duplicates
+        #   - Conditional function to check if directory exists
+        #   - Conditional function to check if 'artist' field is null
+        #   - Conditional function to check if 'contributing artist' field is null
