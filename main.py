@@ -7,7 +7,7 @@ path = 'media'
 
 files = os.listdir(path)
 
-for root, files in os.walk(path, topdown=False):
+for root, directories, files in os.walk(path, topdown=False):
     for name in files:
         audio_file = eyed3.load(os.path.join(root, name))
 
