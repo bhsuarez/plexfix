@@ -2,7 +2,7 @@ import eyed3
 import logging
 import os
 
-#   Stupid error
+#   Stupid errors need stupid comments
 logging.getLogger("eyed3.mp3.headers").setLevel(logging.CRITICAL)
 
 #   Set path
