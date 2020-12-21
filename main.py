@@ -1,6 +1,7 @@
 import eyed3
 import logging
 import os
+import shutil
 
 #   Stupid errors need stupid comments
 logging.getLogger("eyed3.mp3.headers").setLevel(logging.CRITICAL)
@@ -27,20 +28,24 @@ for root, directories, files in os.walk(path, topdown=False):
                 artist = artist.replace("/", "&")
             album = audio_file.tag.album
 
+            #   Files
+            original_path = os.path.join(root, name)
+            destination_path = os.path.join(root, artist, album, title)+".mp3"
+
+            #   Create artist directory if it doesn't exist
             if not os.path.isdir(os.path.join(root, artist)):
                 os.makedirs(os.path.join(root, artist))
                 print(f"Directory '{artist}' didn't exist, making it now.")
 
-            #   Move mp3 to
+            #   Create album directory if it doesn't exist
+            if not os.path.isdir(os.path.join(root, artist, album)):
+                os.makedirs(os.path.join(root, artist, album))
+                print(f"Directory '{artist} / {album}' didn't exist, making it now.")
+
+            #   Move file
+            shutil.move(original_path, destination_path)
 
             #   Print each file path
             print(f"-------------------------------\n"
-                  f"Full Path: {os.path.join(root, name)}.mp3\n"
-                  f"Corrected Path: {os.path.join(root, artist, album, title)}.mp3")
-
-        #   TODO
-        #   - [DONE] Conditional replace for / in 'artist' field with '&'
-        #   - [DONE] Conditional function to check if directory exists
-        #   - Conditional function for duplicates
-        #   - Conditional function to check if 'artist' field is null
-        #   - Conditional function to check if 'contributing artist' field is null
+                  f"Original Path: {original_path}\n"
+                  f"Corrected Path: {destination_path}")

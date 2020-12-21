@@ -1,12 +1,13 @@
 # PLEXFIX
 
-Tool to move files into the standard Plex music structure based on ID3 information. 
+A Python script to move files into the standard Plex music structure based on ID3 information.
 
-Arist / Album / Artist - Album - Track.ext
+Artist / Album / Artist - Album - Track.ext
 * .ext is the music file extension 
 
-
-## TODO:
-1 - Contributing artists delimited by ;
-2 - Album artist v Contributing artist
-3 - Duplicates
+##  TODO
+- [DONE] Conditional replace for '/' in 'artist' field with '&' character
+- [DONE] Conditional function to check if artist/album directory exists
+- Conditional function for finding and moving duplicate MP3 files
+- Conditional function to check if 'artist' field is null
+- Conditional function to check if 'contributing artist' field is null
