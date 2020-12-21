@@ -7,7 +7,14 @@ path = 'media'
 
 files = os.listdir(path)
 
-for root, directories, files in os.walk(path, topdown=False):
+for root, files in os.walk(path, topdown=False):
     for name in files:
         audio_file = eyed3.load(os.path.join(root, name))
-        print(f"{audio_file.tag.artist} / {audio_file.tag.album} / {audio_file.tag.title}")
+
+        # Variables
+        title = audio_file.tag.title
+        artist = audio_file.tag.artist
+        album = audio_file.tag.album
+
+        # print(f"{audio_file.tag.artist} / {audio_file.tag.album} / {audio_file.tag.title}")
+        print(f"Full Path: {os.path.join(root, artist, album, title)}.mp3")
