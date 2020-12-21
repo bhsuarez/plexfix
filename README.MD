@@ -1,6 +1,6 @@
 # PLEXFIX
 
-A Python script to move files into the standard Plex music structure based on ID3 information.
+A Python script to move files into a standard directory structure based on ID3 information for importing into Plex:
 
 from
 ```
