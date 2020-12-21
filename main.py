@@ -16,17 +16,22 @@ for root, directories, files in os.walk(path, topdown=False):
     for name in files:
 
         #   Load mp3 file
-        audio_file = eyed3.load(os.path.join(root, name))
+        if not name == '.DS_Store':
+            audio_file = eyed3.load(os.path.join(root, name))
 
-        #   Variables
-        title = audio_file.tag.title
-        artist = audio_file.tag.artist
-        album = audio_file.tag.album
+            #   Variables
+            title = audio_file.tag.title
+            artist = audio_file.tag.artist
+            album = audio_file.tag.album
 
-        #   Print each file path
-        print(f"-------------------------------\n"
-              f"Full Path: {os.path.join(root, name)}.mp3\n"
-              f"Corrected Path: {os.path.join(root, artist, album, title)}.mp3")
+            if not os.path.isdir(os.path.join(root, artist)):
+                os.makedirs(os.path.join(root, artist))
+                print(f"Directory {artist} didn't exist, making it now.")
+
+            #   Print each file path
+            print(f"-------------------------------\n"
+                  f"Full Path: {os.path.join(root, name)}.mp3\n"
+                  f"Corrected Path: {os.path.join(root, artist, album, title)}.mp3")
 
         #   TODO
         #   - Conditional function for duplicates
