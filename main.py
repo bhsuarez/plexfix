@@ -26,7 +26,7 @@ for root, directories, files in os.walk(path, topdown=False):
 
             if not os.path.isdir(os.path.join(root, artist)):
                 os.makedirs(os.path.join(root, artist))
-                print(f"Directory {artist} didn't exist, making it now.")
+                print(f"Directory '{artist}' didn't exist, making it now.")
 
             #   Print each file path
             print(f"-------------------------------\n"
