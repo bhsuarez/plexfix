@@ -42,6 +42,10 @@ for root, directories, files in os.walk(path, topdown=False):
             if album == ' ' or album == '' or album is None:
                 album = "Unknown Album"
 
+            #   Album name check
+            if album.find(":") != -1 or artist.find(":"):
+                album = album.replace(":", "")
+
             #   Files and directories
             original_path = os.path.join(root, name)
             destination_path = os.path.join(root, artist, album, title) + ".mp3"
