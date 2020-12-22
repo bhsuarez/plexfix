@@ -27,20 +27,22 @@ for root, directories, files in os.walk(path, topdown=False):
             #   Set Variables
             title = audio_file.tag.title
             artist = audio_file.tag.artist
-            #   Null check
+
+            #   Artist null check
             if artist == ' ' or artist == '' or artist is None:
                 artist = "Unknown Artist"
+
             #   If the artist ID3 name contains a /, replace with &
             if artist.find("/") != -1:
                 artist = artist.replace("/", "&")
 
             album = audio_file.tag.album
 
-            #   If the album is null
+            #   Album null check
             if album == ' ' or album == '' or album is None:
                 album = "Unknown Album"
 
-            #   Files
+            #   Files and directories
             original_path = os.path.join(root, name)
             destination_path = os.path.join(root, artist, album, title) + ".mp3"
 
@@ -54,9 +56,9 @@ for root, directories, files in os.walk(path, topdown=False):
                 print(f"Directory '{artist}' didn't exist, making it now.")
 
             #   Create album directory if it doesn't exist
-            if not os.path.isdir(os.path.join(root, artist, album)):
+            if not os.path.isdir(os.path.join(root, artist, album).replace("\\", "/")):
 
-                os.makedirs(os.path.join(root, artist, album))
+                os.makedirs(os.path.join(root, artist, album).replace("\\", "/"))
                 print(f"Directory '{artist} / {album}' didn't exist, making it now.")
 
             #   Move file
