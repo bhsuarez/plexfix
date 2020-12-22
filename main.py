@@ -8,6 +8,7 @@ logging.getLogger("eyed3.mp3.headers").setLevel(logging.CRITICAL)
 
 #   Set path
 path = 'media'
+counter = 0
 
 #   List directory
 files = os.listdir(path)
@@ -21,6 +22,7 @@ for root, directories, files in os.walk(path, topdown=False):
         if name.endswith('mp3'):
             #   Load MP3 file
             audio_file = eyed3.load(os.path.join(root, name))
+            counter += 1
 
             #   Set Variables
             title = audio_file.tag.title
@@ -62,3 +64,5 @@ for root, directories, files in os.walk(path, topdown=False):
 
             #   Print out
             print(f"Moved {original_path} to {destination_path} size: {size}")
+
+print(f"Total songs moved: {counter}")
