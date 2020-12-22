@@ -14,6 +14,9 @@ counter = 0
 #   List directory
 files = os.listdir(path)
 
+#   Illegal characters
+#   TODO
+
 
 class MP3Track:
     def __init__(self,
@@ -21,18 +24,30 @@ class MP3Track:
                  mp3_album,
                  mp3_title):
 
+        #   Null check for all variables
+        if mp3_artist == ' ' or mp3_artist == '' or mp3_artist is None:
+            mp3_artist = "Unknown Artist"
+        if mp3_album == ' ' or mp3_album == '' or mp3_album is None:
+            mp3_album = "Unknown Album"
+
         #   Input validation for / character
         if mp3_title.find("/") != -1:
-            mp3_title = mp3_title.replace("/", " AND ")
+            mp3_title = mp3_title.replace("/", " and ")
+        if mp3_artist.find("/") != -1:
+            mp3_artist = mp3_artist.replace("/", " and ")
+        if mp3_album.find("/") != -1:
+            mp3_album = mp3_album.replace("/", " and ")
 
+        #   Setters for object
         self.artist = mp3_artist
         self.album = mp3_album
         self.title = mp3_title
 
     def __str__(self):
-        return f"Artist: {self.artist}" \
-               f"Album:  {self.album}" \
-               f"Title:  {self.title}"
+        return f"\n" \
+               f"Artist: {self.artist}\n" \
+               f"Album:  {self.album}\n" \
+               f"Title:  {self.title}\n"
 
 
 def create_artist_directory():
@@ -65,18 +80,6 @@ for root, directories, files in os.walk(path, topdown=False):
             #   Set Variables
             new_mp3_track = MP3Track(audio_file.tag.artist, audio_file.tag.album, audio_file.tag.title)
             print(f"Loaded {new_mp3_track}")
-
-            #   Artist null check
-            if new_mp3_track.artist == ' ' or new_mp3_track.artist == '' or new_mp3_track.artist is None:
-                new_mp3_track.artist = "Unknown Artist"
-
-            #   If Artist ID3 name contains a /, replace with &
-            if new_mp3_track.artist.find("/") != -1:
-                new_mp3_track.artist = new_mp3_track.artist.replace("/", "&")
-
-            #   Album null check
-            if new_mp3_track.album == ' ' or new_mp3_track.album == ' ' or new_mp3_track.album is None:
-                new_mp3_track.album = "Unknown Album"
 
             #   Set files and directories
             original_path = os.path.join(root, name)
