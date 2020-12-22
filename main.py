@@ -2,6 +2,7 @@ import eyed3
 import logging
 import os
 import shutil
+import re
 
 #   Stupid errors need stupid comments
 logging.getLogger("eyed3.mp3.headers").setLevel(logging.CRITICAL)
@@ -9,6 +10,9 @@ logging.getLogger("eyed3.mp3.headers").setLevel(logging.CRITICAL)
 #   Set path
 path = 'media'
 counter = 0
+
+#   Set regex
+regex = re.compile('/\:*?"<>|')
 
 #   List directory
 files = os.listdir(path)
@@ -27,6 +31,15 @@ for root, directories, files in os.walk(path, topdown=False):
             #   Set Variables
             title = audio_file.tag.title
             artist = audio_file.tag.artist
+            album = audio_file.tag.album
+
+            #
+            #   Title has a / , how to remove?
+            #
+            if regex.search(title) is None:
+                pass
+            else:
+                title = re.sub(regex, '', title)
 
             #   Artist null check
             if artist == ' ' or artist == '' or artist is None:
@@ -36,15 +49,16 @@ for root, directories, files in os.walk(path, topdown=False):
             if artist.find("/") != -1:
                 artist = artist.replace("/", "&")
 
-            album = audio_file.tag.album
+            if regex.search(artist) is None:
+                artist = re.sub(regex, ' ', artist)
 
             #   Album null check
-            if album == ' ' or album == '' or album is None:
+            if album == ' ' or album == ' ' or album is None:
                 album = "Unknown Album"
 
-            #   Album name check
-            if album.find(":") != -1 or artist.find(":"):
-                album = album.replace(":", "")
+            #   Remove any special symbols album
+            if regex.search(album) is None:
+                album = re.sub(regex, '', album)
 
             #   Files and directories
             original_path = os.path.join(root, name)
@@ -55,13 +69,11 @@ for root, directories, files in os.walk(path, topdown=False):
 
             #   Create artist directory if it doesn't exist
             if not os.path.isdir(os.path.join(root, artist)):
-
                 os.makedirs(os.path.join(root, artist))
                 print(f"Directory '{artist}' didn't exist, making it now.")
 
             #   Create album directory if it doesn't exist
             if not os.path.isdir(os.path.join(root, artist, album).replace("\\", "/")):
-
                 os.makedirs(os.path.join(root, artist, album).replace("\\", "/"))
                 print(f"Directory '{artist} / {album}' didn't exist, making it now.")
 
@@ -72,3 +84,7 @@ for root, directories, files in os.walk(path, topdown=False):
             print(f"Moved {original_path} to {destination_path} size: {size}")
 
 print(f"Total songs moved: {counter}")
+
+
+def __main__():
+    return "Hello world"
