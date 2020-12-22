@@ -12,23 +12,31 @@ path = 'media'
 #   List directory
 files = os.listdir(path)
 
-#   Loop through directory
+#   OS Walk through path
 for root, directories, files in os.walk(path, topdown=False):
+
+    #   Loop through files
     for name in files:
 
-        #   Load MP3 file
-        if not name == '.DS_Store':
+        if name.endswith('mp3'):
+            #   Load MP3 file
             audio_file = eyed3.load(os.path.join(root, name))
 
             #   Set Variables
             title = audio_file.tag.title
             artist = audio_file.tag.artist
+            #   Null check
+            if artist == ' ' or artist == '' or artist is None:
+                artist = "Unknown Artist"
             #   If the artist ID3 name contains a /, replace with &
             if artist.find("/") != -1:
                 artist = artist.replace("/", "&")
-            if artist == ' ' or artist == '':
-                artist = "Unknown Artist"
+
             album = audio_file.tag.album
+
+            #   If the album is null
+            if album == ' ' or album == '' or album is None:
+                album = "Unknown Album"
 
             #   Files
             original_path = os.path.join(root, name)
@@ -40,21 +48,17 @@ for root, directories, files in os.walk(path, topdown=False):
             #   Create artist directory if it doesn't exist
             if not os.path.isdir(os.path.join(root, artist)):
 
-                #os.makedirs(os.path.join(root, artist))
+                os.makedirs(os.path.join(root, artist))
                 print(f"Directory '{artist}' didn't exist, making it now.")
 
             #   Create album directory if it doesn't exist
             if not os.path.isdir(os.path.join(root, artist, album)):
 
-                #os.makedirs(os.path.join(root, artist, album))
+                os.makedirs(os.path.join(root, artist, album))
                 print(f"Directory '{artist} / {album}' didn't exist, making it now.")
 
             #   Move file
-            #shutil.move(original_path, destination_path)
+            shutil.move(original_path, destination_path)
 
-            #   Print each file path
-            print(f"-------------------------------\n"
-                  f"Original Path: {original_path}\n"
-                  f"Corrected Path: {destination_path}\n"
-                  f"Size: {size}\n"
-                  f"-------------------------------\n")
+            #   Print out
+            print(f"Moved {original_path} to {destination_path} size: {size}")
