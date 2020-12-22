@@ -20,6 +20,11 @@ class MP3Track:
                  mp3_artist,
                  mp3_album,
                  mp3_title):
+
+        #   Input validation for / character
+        if mp3_title.find("/") != -1:
+            mp3_title = mp3_title.replace("/", " AND ")
+
         self.artist = mp3_artist
         self.album = mp3_album
         self.title = mp3_title
@@ -53,22 +58,19 @@ for root, directories, files in os.walk(path, topdown=False):
         if name.endswith('mp3'):
             #   Load MP3 file
             audio_file = eyed3.load(os.path.join(root, name))
-            print(f"Loaded {audio_file}")
 
             #   Increment counter
             counter += 1
 
             #   Set Variables
             new_mp3_track = MP3Track(audio_file.tag.artist, audio_file.tag.album, audio_file.tag.title)
-            # title = audio_file.tag.title
-            # artist = audio_file.tag.artist
-            # album = audio_file.tag.album
+            print(f"Loaded {new_mp3_track}")
 
             #   Artist null check
             if new_mp3_track.artist == ' ' or new_mp3_track.artist == '' or new_mp3_track.artist is None:
                 new_mp3_track.artist = "Unknown Artist"
 
-            #   If the artist ID3 name contains a /, replace with &
+            #   If Artist ID3 name contains a /, replace with &
             if new_mp3_track.artist.find("/") != -1:
                 new_mp3_track.artist = new_mp3_track.artist.replace("/", "&")
 
