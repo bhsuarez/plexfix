@@ -87,7 +87,7 @@ for root, directories, files in os.walk(path, topdown=False):
 
             #   Set files and directories
             original_path = os.path.join(root, name)
-            destination_path = os.path.join(root, new_mp3_track.artist, new_mp3_track.album, new_mp3_track.title) + ".mp3 "
+            destination_path = os.path.join(root, new_mp3_track.artist, new_mp3_track.album, new_mp3_track.title) + ".mp3"
 
             #   Get Size
             size = str(os.path.getsize(original_path))
