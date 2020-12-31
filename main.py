@@ -1,4 +1,5 @@
 import eyed3
+import cleanup
 import logging
 import os
 import shutil
@@ -16,6 +17,9 @@ files = os.listdir(path)
 
 #   Illegal characters
 #   TODO
+
+#   Cleanup
+cleanup.cleanup_directory()
 
 
 class MP3Track:
