@@ -18,7 +18,7 @@ files = os.listdir(path)
 #   Illegal characters
 #   TODO
 
-#   Cleanup
+#   Cleanup function
 cleanup.cleanup_directory()
 
 
@@ -103,6 +103,8 @@ for root, directories, files in os.walk(path, topdown=False):
 
             #   Print out
             print(f"Moved {original_path} to {destination_path} size: {size}")
+        else:
+            print("Error: wrong file format")
 
 print(f"Total songs moved: {counter}")
 

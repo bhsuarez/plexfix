@@ -14,4 +14,4 @@ def cleanup_directory():
     shutil.rmtree('./media')
 
     #   2.
-    shutil.copytree('./media_backup', './media')
+    shutil.copytree('./media_backup', './media', copy_function=shutil.copy2)
