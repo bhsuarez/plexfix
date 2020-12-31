@@ -105,6 +105,3 @@ print(f"Total songs moved: {counter}")
 
 def __main__():
     return "Hello world"
-
-
-
