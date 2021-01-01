@@ -14,7 +14,7 @@ counter = 0
 files = os.listdir(path)
 
 #   Illegal characters array
-sp_chars = [';', ':', '!', "*", "/", "|", '"', "<", ">", "&", "?"]
+sp_chars = [';', ':', '!', "*", "/", "|", '"', "<", ">", "&", "?", "..."]
 
 #   Cleanup function
 #   cleanup.cleanup_directory()
