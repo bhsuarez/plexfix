@@ -3,7 +3,6 @@ import cleanup
 import logging
 import os
 import shutil
-import re
 
 #   Stupid errors need stupid comments
 logging.getLogger("eyed3.mp3.headers").setLevel(logging.CRITICAL)
@@ -17,6 +16,7 @@ files = os.listdir(path)
 
 #   Illegal characters
 #   TODO
+#
 
 #   Cleanup function
 cleanup.cleanup_directory()
@@ -28,19 +28,21 @@ class MP3Track:
                  mp3_album,
                  mp3_title):
 
-        #   Null check for all variables
+        #   Input validation for artist
         if mp3_artist == ' ' or mp3_artist == '' or mp3_artist is None:
             mp3_artist = "Unknown Artist"
-        if mp3_album == ' ' or mp3_album == '' or mp3_album is None:
-            mp3_album = "Unknown Album"
-
-        #   Input validation for / character
-        if mp3_title.find("/") != -1:
-            mp3_title = mp3_title.replace("/", " and ")
         if mp3_artist.find("/") != -1:
             mp3_artist = mp3_artist.replace("/", " and ")
+
+        #   Input validation for album
+        if mp3_album == ' ' or mp3_album == '' or mp3_album is None:
+            mp3_album = "Unknown Album"
         if mp3_album.find("/") != -1:
             mp3_album = mp3_album.replace("/", " and ")
+
+        #   Input validation for title
+        if mp3_title.find("/") != -1:
+            mp3_title = mp3_title.replace("/", " and ")
 
         #   Setters for object
         self.artist = mp3_artist
