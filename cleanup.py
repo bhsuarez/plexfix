@@ -15,3 +15,7 @@ def cleanup_directory():
 
     #   2.
     shutil.copytree('./media_backup', './media', copy_function=shutil.copy2)
+
+
+#   Run
+cleanup_directory()
