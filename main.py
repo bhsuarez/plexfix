@@ -15,8 +15,7 @@ counter = 0
 files = os.listdir(path)
 
 #   Illegal characters
-#   TODO
-#
+sp_chars = [';', ':', '!', "*", "/", "|", '"', "<", ">"]
 
 #   Cleanup function
 cleanup.cleanup_directory()
@@ -31,18 +30,20 @@ class MP3Track:
         #   Input validation for artist
         if mp3_artist == ' ' or mp3_artist == '' or mp3_artist is None:
             mp3_artist = "Unknown Artist"
-        if mp3_artist.find("/") != -1:
-            mp3_artist = mp3_artist.replace("/", " and ")
+        for i in sp_chars:
+            #   if mp3_artist.find("/") != -1:
+            mp3_artist = mp3_artist.replace(i, "")
 
         #   Input validation for album
         if mp3_album == ' ' or mp3_album == '' or mp3_album is None:
             mp3_album = "Unknown Album"
-        if mp3_album.find("/") != -1:
-            mp3_album = mp3_album.replace("/", " and ")
+        for i in sp_chars:
+            #   if mp3_album.find("/") != -1:
+            mp3_album = mp3_album.replace(i, "")
 
         #   Input validation for title
-        if mp3_title.find("/") != -1:
-            mp3_title = mp3_title.replace("/", " and ")
+        for i in sp_chars:
+            mp3_title = mp3_title.replace(i, "")
 
         #   Setters for object
         self.artist = mp3_artist
@@ -57,14 +58,12 @@ class MP3Track:
 
 
 def create_artist_directory():
-
     if not os.path.isdir(os.path.join(root, new_mp3_track.artist)):
         os.makedirs(os.path.join(root, new_mp3_track.artist))
         print(f"Directory '{new_mp3_track.artist}' didn't exist, making it now.")
 
 
 def create_album_directory():
-
     if not os.path.isdir(os.path.join(root, new_mp3_track.artist, new_mp3_track.album).replace("\\", "/")):
         os.makedirs(os.path.join(root, new_mp3_track.artist, new_mp3_track.album).replace("\\", "/"))
         return f"Directory '{new_mp3_track.artist} / {new_mp3_track.album}' didn't exist, making it now."
@@ -89,7 +88,8 @@ for root, directories, files in os.walk(path, topdown=False):
 
             #   Set files and directories
             original_path = os.path.join(root, name)
-            destination_path = os.path.join(root, new_mp3_track.artist, new_mp3_track.album, new_mp3_track.title) + ".mp3"
+            destination_path = os.path.join(root, new_mp3_track.artist, new_mp3_track.album,
+                                            new_mp3_track.title) + ".mp3"
 
             #   Get Size
             size = str(os.path.getsize(original_path))
