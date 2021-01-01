@@ -1,5 +1,4 @@
 import eyed3
-import cleanup
 import logging
 import os
 import shutil
@@ -15,7 +14,7 @@ counter = 0
 files = os.listdir(path)
 
 #   Illegal characters array
-sp_chars = [';', ':', '!', "*", "/", "|", '"', "<", ">"]
+sp_chars = [';', ':', '!', "*", "/", "|", '"', "<", ">", "&", "?"]
 
 #   Cleanup function
 #   cleanup.cleanup_directory()
@@ -31,14 +30,13 @@ class MP3Track:
         if mp3_artist == ' ' or mp3_artist == '' or mp3_artist is None:
             mp3_artist = "Unknown Artist"
         for i in sp_chars:
-            #   if mp3_artist.find("/") != -1:
             mp3_artist = mp3_artist.replace(i, "")
+        mp3_artist = mp3_artist.strip()
 
         #   Input validation for album
         if mp3_album == ' ' or mp3_album == '' or mp3_album is None:
             mp3_album = "Unknown Album"
         for i in sp_chars:
-            #   if mp3_album.find("/") != -1:
             mp3_album = mp3_album.replace(i, "")
 
         #   Input validation for title
