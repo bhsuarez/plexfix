@@ -38,10 +38,12 @@ class MP3Track:
             mp3_album = "Unknown Album"
         for i in sp_chars:
             mp3_album = mp3_album.replace(i, "")
+        mp3_album = mp3_album.strip()
 
         #   Input validation for title
         for i in sp_chars:
             mp3_title = mp3_title.replace(i, "")
+        mp3_title = mp3_title.strip()
 
         #   Setters for object
         self.artist = mp3_artist
