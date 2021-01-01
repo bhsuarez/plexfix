@@ -18,7 +18,7 @@ files = os.listdir(path)
 sp_chars = [';', ':', '!', "*", "/", "|", '"', "<", ">"]
 
 #   Cleanup function
-cleanup.cleanup_directory()
+#   cleanup.cleanup_directory()
 
 
 class MP3Track:
