@@ -14,7 +14,7 @@ counter = 0
 #   List directory
 files = os.listdir(path)
 
-#   Illegal characters
+#   Illegal characters array
 sp_chars = [';', ':', '!', "*", "/", "|", '"', "<", ">"]
 
 #   Cleanup function
