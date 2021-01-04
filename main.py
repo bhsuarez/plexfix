@@ -47,18 +47,16 @@ class MP3Track:
                f"Album:  {self.album}\n" \
                f"Title:  {self.title}\n"
 
-    # We can use methods to reduce the scope of the __init__ method
-    # This way we can unit test our code!
     @staticmethod
     def clean_artist(mp3_artist):
         """
         Cleans the input artist to something usable
         """
-        if mp3_artist == ' ' or mp3_artist == '' or mp3_artist is None:
+        if mp3_artist in (" ", "", None):
             mp3_artist = "Unknown Artist"
 
-        # We are going to have to call `artist.replace()` for EACH special character
-        # Let's change this up using regex so we only perform `artist.replace` 1 time
+        # TODO: We are going to have to call `artist.replace()` for EACH special character
+        #  Let's change this up using regex so we only perform `artist.replace` 1 time
         for i in sp_chars:
             mp3_artist = mp3_artist.replace(i, "")
         return mp3_artist.strip()
