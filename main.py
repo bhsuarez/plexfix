@@ -8,10 +8,6 @@ logging.getLogger("eyed3.mp3.headers").setLevel(logging.CRITICAL)
 
 #   Set path
 path = 'media'
-counter = 0
-
-#   List directory
-files = os.listdir(path)
 
 #   Illegal characters array
 sp_chars = [';', ':', '!', "*", "/", "|", '"', "<", ">", "&", "?", "..."]
@@ -25,13 +21,8 @@ class MP3Track:
                  mp3_artist,
                  mp3_album,
                  mp3_title):
-
-        #   Input validation for artist
-        if mp3_artist == ' ' or mp3_artist == '' or mp3_artist is None:
-            mp3_artist = "Unknown Artist"
-        for i in sp_chars:
-            mp3_artist = mp3_artist.replace(i, "")
-        mp3_artist = mp3_artist.strip()
+        # When reading through the code, this is easier to understand than the implementation of the function... right?
+        cleaned_artist = self.clean_artist(mp3_artist)
 
         #   Input validation for album
         if mp3_album == ' ' or mp3_album == '' or mp3_album is None:
@@ -46,7 +37,7 @@ class MP3Track:
         mp3_title = mp3_title.strip()
 
         #   Setters for object
-        self.artist = mp3_artist
+        self.artist = cleaned_artist
         self.album = mp3_album
         self.title = mp3_title
 
@@ -56,60 +47,84 @@ class MP3Track:
                f"Album:  {self.album}\n" \
                f"Title:  {self.title}\n"
 
+    # We can use methods to reduce the scope of the __init__ method
+    # This way we can unit test our code!
+    @staticmethod
+    def clean_artist(mp3_artist):
+        """
+        Cleans the input artist to something usable
+        """
+        if mp3_artist == ' ' or mp3_artist == '' or mp3_artist is None:
+            mp3_artist = "Unknown Artist"
 
-def create_artist_directory():
+        # We are going to have to call `artist.replace()` for EACH special character
+        # Let's change this up using regex so we only perform `artist.replace` 1 time
+        for i in sp_chars:
+            mp3_artist = mp3_artist.replace(i, "")
+        return mp3_artist.strip()
+
+
+# don't rely on global namespace, use method parameters to pass variables
+def create_artist_directory(root, new_mp3_track):
     if not os.path.isdir(os.path.join(root, new_mp3_track.artist)):
         os.makedirs(os.path.join(root, new_mp3_track.artist))
         print(f"Directory '{new_mp3_track.artist}' didn't exist, making it now.")
 
 
-def create_album_directory():
+def create_album_directory(root, new_mp3_track):
     if not os.path.isdir(os.path.join(root, new_mp3_track.artist, new_mp3_track.album).replace("\\", "/")):
         os.makedirs(os.path.join(root, new_mp3_track.artist, new_mp3_track.album).replace("\\", "/"))
         return f"Directory '{new_mp3_track.artist} / {new_mp3_track.album}' didn't exist, making it now."
 
 
-#   OS Walk through path
-for root, directories, files in os.walk(path, topdown=False):
+def main():
+    """
+    This is the main method of the application. It does all the work!
 
-    #   Loop through files
-    for name in files:
+    Scoping the code to a function will allow us to write unit tests for your code!
+    """
+    counter = 0
+    #   OS Walk through path
+    for root, directories, files in os.walk(path, topdown=False):
 
-        if name.endswith('mp3'):
-            #   Load MP3 file
-            audio_file = eyed3.load(os.path.join(root, name))
+        #   Loop through files
+        for name in files:
 
-            #   Increment counter
-            counter += 1
+            if name.endswith('mp3'):
+                #   Load MP3 file
+                audio_file = eyed3.load(os.path.join(root, name))
 
-            #   Set Variables
-            new_mp3_track = MP3Track(audio_file.tag.artist, audio_file.tag.album, audio_file.tag.title)
-            print(f"Loaded {new_mp3_track}")
+                #   Increment counter
+                counter += 1
 
-            #   Set files and directories
-            original_path = os.path.join(root, name)
-            destination_path = os.path.join(root, new_mp3_track.artist, new_mp3_track.album,
-                                            new_mp3_track.title) + ".mp3"
+                #   Set Variables
+                new_mp3_track = MP3Track(audio_file.tag.artist, audio_file.tag.album, audio_file.tag.title)
+                print(f"Loaded {new_mp3_track}")
 
-            #   Get Size
-            size = str(os.path.getsize(original_path))
+                #   Set files and directories
+                original_path = os.path.join(root, name)
+                destination_path = os.path.join(root, new_mp3_track.artist, new_mp3_track.album,
+                                                new_mp3_track.title) + ".mp3"
 
-            #   Create album directory if it doesn't exist
-            create_artist_directory()
+                #   Get Size
+                size = str(os.path.getsize(original_path))
 
-            #   Create artist directory if it doesn't exist
-            create_album_directory()
+                #   Create album directory if it doesn't exist
+                create_artist_directory(root, new_mp3_track)
 
-            #   Move file
-            shutil.move(original_path, destination_path)
+                #   Create artist directory if it doesn't exist
+                create_album_directory(root, new_mp3_track)
 
-            #   Print out
-            print(f"Moved {original_path} to {destination_path} size: {size}")
-        else:
-            print("Error: wrong file format")
+                #   Move file
+                shutil.move(original_path, destination_path)
 
-print(f"Total songs moved: {counter}")
+                #   Print out
+                print(f"Moved {original_path} to {destination_path} size: {size}")
+            else:
+                print("Error: wrong file format")
+
+    print(f"Total songs moved: {counter}")
 
 
 def __main__():
-    return "Hello world"
+    main()
