@@ -24,3 +24,6 @@ class TestMP3Track(TestCase):
 
     def test_clean_artist__replace_special_characters(self):
         self.assertEqual("artist", MP3Track.clean_artist("?artist?"))
+
+    def test_this_is_going_to_fail(self):
+        self.assertEqual(0, 1)
